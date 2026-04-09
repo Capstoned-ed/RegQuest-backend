@@ -1,8 +1,13 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
+from rest_framework.permissions import AllowAny
 from .models import User, StudentInfo, StaffInfo
-from .serializers import UserSerializer, StudentInfoSerializer, StaffInfoSerializer
+from .serializers import UserSerializer, StudentInfoSerializer, StaffInfoSerializer, RegisterSerializer
 
-# Create your views here.
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
