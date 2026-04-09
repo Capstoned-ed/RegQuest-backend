@@ -3,6 +3,6 @@ from .views import DocumentViewSet
 
 router = DefaultRouter()
 
-router.register(r'documents', DocumentViewSet)
+router.register(r'', DocumentViewSet)
 
 urlpatterns = router.urls

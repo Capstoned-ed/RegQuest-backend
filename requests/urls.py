@@ -3,6 +3,6 @@ from .views import RequestViewSet
 
 router = DefaultRouter()
 
-router.register(r'requests', RequestViewSet)
+router.register(r'', RequestViewSet)
 
 urlpatterns = router.urls
