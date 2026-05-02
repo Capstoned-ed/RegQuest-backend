@@ -21,12 +21,18 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    def __str__(self):
+        return self.username
+
 class StudentInfo(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     course = models.CharField(max_length=50)
     year_level = models.IntegerField()
-
+    def __str__(self):
+        return self.user.username + " - " + self.course + " Year " + str(self.year_level)
 
 class StaffInfo(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     position = models.CharField(max_length=100)
+    def __str__(self):
+        return self.user.username + " - " + self.position   

@@ -25,4 +25,6 @@ class Request(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
+    def __str__(self):
+        return self.document_type.document_name + " request by " + self.user.username
