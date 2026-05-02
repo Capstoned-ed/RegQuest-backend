@@ -21,7 +21,9 @@ class RegisterView(generics.CreateAPIView):
 
 
 # LOGIN (FIXED)
+from rest_framework.decorators import api_view, permission_classes
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -42,14 +44,27 @@ def login(request):
 
     refresh = RefreshToken.for_user(user)
 
+    user_data = {
+        "id": user.id,
+        "email": user.email,
+        "role": user.role,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "univ_id": user.univ_id
+    }
+
+    if user.role == 'student':
+        try:
+            student_info = StudentInfo.objects.get(user=user)
+            user_data["course"] = student_info.course
+            user_data["year_level"] = student_info.year_level
+        except StudentInfo.DoesNotExist:
+            pass
+
     return Response({
         "access": str(refresh.access_token),
         "refresh": str(refresh),
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "role": user.role
-        }
+        "user": user_data
     })
 
 
