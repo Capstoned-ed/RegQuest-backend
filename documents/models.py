@@ -6,3 +6,6 @@ class Document(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     processing_time_days = models.IntegerField()
+
+    def __str__(self):
+        return self.document_name
