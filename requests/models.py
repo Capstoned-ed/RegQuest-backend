@@ -1,9 +1,11 @@
 from django.db import models
 from django.conf import settings
 from documents.models import Document
+import uuid
 
 # Create your models here.
 class Request(models.Model):
+    tracking_number = models.CharField(max_length=50, unique=True, blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     document_type = models.ForeignKey(Document, on_delete=models.PROTECT)
     class Status(models.TextChoices):
@@ -25,6 +27,11 @@ class Request(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.tracking_number:
+            self.tracking_number = f"REQ-{uuid.uuid4().hex[:8].upper()}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.document_type.document_name + " request by " + self.user.username
